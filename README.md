@@ -10,6 +10,7 @@ $asset->addCss(SITE_TEMPLATE_PATH."/vendor/notifies/notifies.css");
 $asset->addJs(SITE_TEMPLATE_PATH."/vendor/notifies/notifies.js");
 ?>
 ```
+Файлы брать из папки ``/src``. В папку с со скриптом и стилями положить папку с иконками. Иконки взять из папки ``/icons``
 
 ## Использование
 1. В ``footer.php`` перед ``</body>`` вставить элемент
