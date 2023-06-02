@@ -78,7 +78,7 @@ class Notify {
             // templateElem.dataset.notifyCounter = `${this.counterId}`;
 
             templateElem.innerHTML = `
-                <img src="/icons/${this._type}.svg"
+                <img src="./icons/${this._type}.svg"
                      class="mm-notify__icon"
                      alt="${this._type}">
                 
