@@ -19,9 +19,118 @@
 
     <link rel="stylesheet" href="./src/page.css">
     <link rel="stylesheet" href="./src/notifies.css">
+    <link rel="stylesheet" href="./src/form.css">
 </head>
 <body>
+    <header>
+        <div class="container">
+            <a class="header__logo" target="_blank" href="https://mediamint.ru/">
+                mediamint
+            </a>
+        </div>
+    </header>
 
+    <main>
+        <div class="container">
+            <form action="" method="POST" novalidate class="mm-form">
+                <p class="mm-form__title">Генерация уведомлений</p>
+
+                <label class="input-wrapper select">
+                    <span>Выберите тип уведомления</span>
+                    <select name="notify-type">
+                        <option value="" selected disabled>Выберите тип...</option>
+                        <option value="error">Ошибка</option>
+                        <option value="success">Успех</option>
+                        <option value="info">Информация</option>
+                        <option value="warning">Предупреждение</option>
+                    </select>
+                </label>
+
+                <label class="input-wrapper text">
+                    <span>Введите заголовок уведомления</span>
+                    <input type="text" name="notify-title" placeholder="Заголовок уведомления">
+                </label>
+
+                <label class="input-wrapper text">
+                    <span>Введите текст уведомления</span>
+                    <input type="text" name="notify-text" placeholder="Текст уведомления">
+                </label>
+
+                <fieldset class="row-2">
+                    <div class="input-wrapper radio-buttons">
+                        <span>Выберите позицию</span>
+                        <div class="radio-buttons-wrapper">
+                            <label class="radio-button">
+                                <span>Слева сверху</span>
+                                <input type="radio" name="notify-position" value="top left">
+                            </label>
+
+                            <label class="radio-button">
+                                <span>Справа сверху</span>
+                                <input type="radio" name="notify-position" value="top right">
+                            </label>
+
+                            <label class="radio-button">
+                                <span>Справа снизу</span>
+                                <input type="radio" name="notify-position" value="bottom right">
+                            </label>
+
+                            <label class="radio-button">
+                                <span>Слева снизу</span>
+                                <input type="radio" name="notify-position" value="bottom left">
+                            </label>
+                        </div>
+                    </div>
+
+                    <label class="input-wrapper checkbox">
+                        <span>Фон уведомления с заливкой цветом</span>
+                        <input type="checkbox" name="notify-filled">
+                    </label>
+                </fieldset>
+
+                <label class="input-wrapper number">
+                    <span>Время в мс, через которое уведомление автоматически закроется</span>
+                    <input type="number" name="notify-closeTimeout" min="0" value="3000">
+                </label>
+
+                <fieldset>
+                    <legend>Конфигурация кнопки</legend>
+
+                    <label class="input-wrapper checkbox">
+                        <span>Вывести кнопку в уведомлении</span>
+                        <input type="checkbox" name="notify-showButton" data-depend-block="#btn-config">
+                    </label>
+
+                    <div class="mm-form__hidden-depend-block-wrapper" id="btn-config" style="height: 0;">
+                        <div class="mm-form__hidden-depend-block">
+                            <label class="input-wrapper text">
+                                <span>Текст кнопки</span>
+                                <input type="text" name="notify-buttonText" placeholder="Текст кнопки">
+                            </label>
+                            <label class="input-wrapper text">
+                                <span>Текст в alert() коллбек-функции</span>
+                                <input type="text" name="notify-buttonAlertText" placeholder="alert(<текст >)">
+                            </label>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <button type="submit">Показать уведомление</button>
+                <button type="reset">Очистить форму</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer__inner-wrapper">
+                <a class="header__logo" target="_blank" href="https://mediamint.ru/">
+                    mediamint
+                </a>
+            </div>
+        </div>
+    </footer>
 
 <div class="mm-notifies-wrapper fixed"></div>
 

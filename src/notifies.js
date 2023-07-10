@@ -12,16 +12,18 @@ class Notify {
     #hasButton              // есть ли кнопка в уведомлении
     #buttonConfig           // конфигурация кнопки
     #filledBackground       // будет ли уведомление залито своим цветом
+    #pathToIcons            // путь до svg с иконками
 
     constructor(whereToRender, options = {
         type: "info",
         title: "Информация",
+        text: "Сообщение",
         position: "top right",
         cssPosition: "fixed",
-        text: "Сообщение",
         closeTimeout: 3000,
+        iconsPath: "/local/templates/.default/vendor/notifies/icons/"
     }) {
-        // "info" || "success" || "error"
+        // "info" || "success" || "error" || "warning"
         this.#type = options.type ? options.type : "info";
         this.#notyTitle = options.title ? options.title : "Информация";
 
@@ -37,12 +39,13 @@ class Notify {
 
         this.#selector = options.cssPosition === "block" ? whereToRender : ".mm-notifies-wrapper.fixed";
         this.#notifyText = options.text ? options.text : "Сообщение";
-        // this.counterId = counter();
         this.closeTime = options.closeTimeout ? options.closeTimeout : 3000;
         this.#closeTimeoutFunction = null;
 
-        this.#hasButton = options.hasOwnProperty("button");
+        this.#hasButton = options.hasOwnProperty("button") && options.button.text;
         this.#buttonConfig = options.button ? options.button : null;
+
+        this.#pathToIcons = options.iconsPath ? options.iconsPath : "/local/templates/.default/vendor/notifies/icons";
 
         this.close.bind(this);
     }
@@ -64,9 +67,17 @@ class Notify {
             templateElem.classList.add("mm-notify", `${this.#type}`);
 
             this.#filledBackground ? templateElem.classList.add("filled") : null;
+            this.#hasButton ? templateElem.classList.add("has-button") : null;
+
+            if (this.#filledBackground) {
+                const pathToIcons = this.#pathToIcons.split("/");
+                if (!pathToIcons.includes("filled")) {
+                    this.#pathToIcons = this.#pathToIcons + "/filled";
+                }
+            }
 
             templateElem.innerHTML = `
-                <img src="./icons/${this.#type}.svg"
+                <img src="${this.#pathToIcons}/${this.#type}.svg"
                      class="mm-notify__icon"
                      alt="${this.#type}">
                      
@@ -81,19 +92,24 @@ class Notify {
                 </div>
                 
                 ${this.#hasButton && this.#buttonConfig ? 
-                    `<button onclick="${this.#buttonConfig.callback}" class="mm-notify__callback-btn">
+                    `<button class="mm-notify__callback-btn">
                         ${this.#buttonConfig.text}
                     </button>` 
                 : ""}
                 
                 <button class="mm-notify__close">
-                    <img src="./icons/close.svg" alt="Крестик">
+                    <img src="${this.#pathToIcons}/close.svg" alt="Крестик">
                 </button>
                 `;
 
             templateElem.querySelector(".mm-notify__close").addEventListener('click', () => {
                 this.close();
             });
+
+            const callbackBtn = templateElem.querySelector(".mm-notify__callback-btn");
+            if (callbackBtn) {
+                callbackBtn.addEventListener("click", this.#buttonConfig.callback);
+            }
 
             // templateElem.dataset.notifyCounter = `${this.counterId}`;
         }

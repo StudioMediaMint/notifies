@@ -21,15 +21,19 @@
 
 .mm-notifies-wrapper.fixed {
     position: fixed;
+    top: 0;
+    left: 0;
     z-index: 100;
     width: 100%;
     height: 100vh;
+    pointer-events: none;
 }
 @media screen and (max-width: 992px) {
     .mm-notifies-wrapper.fixed {
         padding-top: 60px;
 
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
         padding-bottom: 60px;
     }
 }
@@ -45,6 +49,24 @@
     max-height: 40vh;
     overflow-y: auto;
     overflow-x: hidden;
+
+    padding: 20px;
+
+    /*--- FireFox ---*/
+    scrollbar-color: rgba(0,0,0,0.9) rgba(0,0,0,0.3); /* «цвет ползунка» «цвет полосы скроллбара» */
+    scrollbar-width: auto  /* толщина */
+}
+
+/* Остальные нормальные браузеры */
+.mm-notifies-wrapper.fixed .mm-notifies__column-wrapper::-webkit-scrollbar {
+    width: 10px; /* ширина для вертикального скролла */
+    height: 10px; /* высота для горизонтального скролла */
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 9em;
+}
+.mm-notifies-wrapper.fixed .mm-notifies__column-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.6);
+    border-radius: 9em;
 }
 
 .mm-notifies-wrapper.fixed .mm-notifies__column-wrapper.right {
@@ -70,29 +92,31 @@
 
 .mm-notifies-wrapper.fixed .top.left {
     right: unset;
-    left: 40px;
-    top: 40px;
+    left: 20px;
+    top: 20px;
 }
 .mm-notifies-wrapper.fixed .bottom.left {
     top: unset;
     right: unset;
-    left: 40px;
-    bottom: 40px;
+    left: 20px;
+    bottom: 20px;
 }
 
 .mm-notifies-wrapper.fixed .top.right {
-    top: 40px;
-    right: 40px;
+    top: 20px;
+    right: 20px;
     left: unset;
 }
 .mm-notifies-wrapper.fixed .bottom.right {
     top: unset;
-    right: 40px;
-    bottom: 40px;
+    right: 20px;
+    bottom: 20px;
 }
 
 
 .mm-notify {
+    pointer-events: all;
+
     color: #000;
 
     display: flex;
@@ -110,8 +134,12 @@
 
     transition: opacity .5s, transform .5s;
     will-change: transform;
-
+}
+.mm-notifies__column-wrapper.right .mm-notify {
     animation: notifyShowEffect 0.3s ease-in-out;
+}
+.mm-notifies__column-wrapper.left .mm-notify {
+    animation: notifyShowEffectToRight 0.3s ease-in-out;
 }
 @media screen and (max-width: 1200px) {
     .mm-notify {
@@ -124,10 +152,26 @@
         width: 100%;
     }
 }
+@media screen and (max-width: 768px) {
+    .mm-notifies__column-wrapper.right .mm-notify,
+    .mm-notifies__column-wrapper.left .mm-notify {
+        animation: notifyShowEffect 0.3s ease-in-out;
+    }
+}
 
 @keyframes notifyShowEffect {
     from {
         transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+@keyframes notifyShowEffectToRight {
+    from {
+        transform: translateX(-100%);
         opacity: 0;
     }
     to {
@@ -149,11 +193,18 @@
 }
 
 .mm-notify.closing {
-    transform: translateX(100%);
     opacity: 0;
 }
+.mm-notifies__column-wrapper.right .mm-notify.closing {
+    transform: translateX(100%);
+}
+.mm-notifies__column-wrapper.left .mm-notify.closing {
+    transform: translateX(-100%);
+}
 @media screen and (max-width: 768px) {
-    .mm-notify.closing {
+    .mm-notifies__column-wrapper.right .mm-notify.closing,
+    .mm-notifies__column-wrapper.left .mm-notify.closing
+    {
         transform: translateY(-100%);
         opacity: 0;
     }
@@ -218,7 +269,6 @@
     font-style: normal;
     font-weight: 700;
     line-height: 140%;
-    text-transform: capitalize;
 
     margin: 0;
 }
@@ -282,6 +332,10 @@
     outline: none;
 
     cursor: pointer;
+}
+
+.mm-notify:not(.has-button) .mm-notify__close {
+    margin-left: auto;
 }
 
 .mm-notify__close img {
