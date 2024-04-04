@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+    
+
+
+    <h3>notifies 2.0.0</h3>
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article><h1>Библиотека уведомлений MediaMint</h1>
+<h2>Подключение в 1С-Битрикс</h2>
+<pre class="prettyprint source lang-php"><code>&lt;?php
+use Bitrix\Main\Page\Asset;
+$asset = Asset::getInstance();
+
+$asset->addCss(&quot;/local/templates/.default/vendor/notifies/notifies.css&quot;);
+$asset->addJs(&quot;/local/templates/.default/vendor/notifies/notifies.js&quot;);
+?>
+</code></pre>
+<p>Файлы брать из папки <code>/src</code>. В папку со скриптом и стилями положить
+папку <code>icons</code> с иконками. Иконки взять из папки <code>/icons</code></p>
+<h2>Использование</h2>
+<p>Перед закрывающим тегом <code>&lt;/body&gt;</code> вставить элемент</p>
+<pre class="prettyprint source lang-html"><code>
+&lt;div class=&quot;mm-notifies-wrapper fixed&quot;>&lt;/div>
+</code></pre>
+<p>В него будут рисовать уведомления с параметром <code>cssPositon: &quot;fixed&quot;</code>.</p>
+<details>
+    <summary>
+        <span style="font-weight: bold; font-size: 20px;">
+            v1.0.0
+        </span>
+    </summary>
+<p>Создание уведомления:</p>
+<pre class="prettyprint source lang-js"><code>const notify = new Notify([whereToRender = &quot;&quot; | CSS_Selector | DOM_Element], {
+    type: &quot;info&quot; | &quot;error&quot; | &quot;success&quot; | &quot;warning&quot;,
+    title: &quot;Информация&quot;,
+    text: &quot;Сообщение&quot;,
+    [position]: &quot;top right&quot; | &quot;top left&quot; | &quot;bottom left&quot; | &quot;bottom right&quot;,
+    [closeTimeout]: 3000,
+    [cssPosition]: &quot;fixed&quot; | &quot;block&quot;,
+    [iconsPath]: &quot;/local/templates/.default/vendor/notifies/icons/&quot;,
+    [filled]: true | false,
+    [button]: {
+        text: &quot;Текст кнопки&quot;,
+        callback: () => {
+            alert(&quot;Callback&quot;)
+        }
+    }
+});
+
+notify.show();
+</code></pre>
+<p>Цвета фонов переопределять в своих стилях, например, в <code>template_styles.css</code></p>
+<p><code>whereToRender</code> - блок, куда отрисовывать сообщения. Используется только
+тогда, когда <code>cssPosition: &quot;block&quot;</code>
+<strong>Значения:</strong></p>
+<ul>
+<li><code>CSS Selector</code> вида <code>&quot;.input-errors-block&quot;</code></li>
+<li><code>DOM Element</code> - результат вызова <code>Element.querySelector()</code></li>
+</ul>
+<p><code>type</code> - тип сообщения.<br>
+<strong>Значения:</strong></p>
+<ul>
+<li><code>info</code> - информационное сообщение, синий фон</li>
+<li><code>success</code> - успешное действие, зеленый фон</li>
+<li><code>error</code> - ошибка, красный фон</li>
+<li><code>warning</code> - предупреждение, оранжевый фон</li>
+</ul>
+<p><code>title</code> - заголовок уведомления<br>
+<strong>Значение:</strong> любая строка. Значение по умолчанию: &quot;<strong>Информация</strong>&quot;.</p>
+<p><code>text</code> - текст сообщения. <br>
+<strong>Значение:</strong> любая строка. Значение по умолчанию: &quot;<strong>Сообщение</strong>&quot;.</p>
+<p><code>position</code> - позиция для отрисовки в углы. При значении <code>cssPosition: &quot;block&quot;</code> игнорируется.
+<br><strong>Значения:</strong></p>
+<ul>
+<li><code>top right</code> - правый верхний угол. Значение по умолчанию.</li>
+<li><code>top left</code> - левый верхний угол</li>
+<li><code>bottom right</code> - нижний правый угол</li>
+<li><code>bottom left</code> - нижний левый угол</li>
+</ul>
+<p><code>closeTimeout</code> - время, через которое уведомление само закроется
+<br><strong>Значение:</strong> число в мс для функции setTimeout(). <strong>Значение по умолчанию -
+3000</strong></p>
+<p><code>cssPosition</code> - тип позиционирования в CSS.
+<br><strong>Значения:</strong></p>
+<ul>
+<li><code>fixed</code> - фиксированное вне потока документа для отрисовки в углы страницы</li>
+<li><code>block</code> - для отрисовки в конкретные блоки (например, после <code>&lt;input&gt;</code>)</li>
+</ul>
+<p><code>iconsPath</code> - путь до папки с иконками. <strong>Необязательный</strong>. Указывается в
+случае, если иконки лежат не в папке
+<code>/local/templates/.default/vendor/notifies/icons</code>.</p>
+<p><code>filled</code> - фон залитый цветом или светлый. <strong>Необязательный</strong></p>
+<p><code>button</code> - конфигурация кнопки в уведомлении. Если указан ключ объекта, но не
+указан текст кнопки, кнопка показана не
+будет. <strong>Значение - объект</strong> с двумя ключами - <strong>text</strong> и <strong>callback</strong></p>
+<pre class="prettyprint source lang-js"><code>options = {
+    ...,
+    button: {
+        text: &quot;Текст кнопки&quot;,
+        callback: function () {
+            alert(&quot;Текст в alert&quot;)
+        }
+    }
+}
+</code></pre>
+</details>
+<details>
+    <summary>
+        <span style="font-weight: bold; font-size: 20px;">
+            v1.1.0
+        </span>
+    </summary>
+Создание аналогично версии 1.0.0
+<ol>
+<li>
+<p>Появились setter-ы для полей:</p>
+<ul>
+<li>type</li>
+<li>notyTitle</li>
+<li>notifyText</li>
+</ul>
+</li>
+<li>
+<p>Теперь поле <code>notifyText</code> может быть пустым и не будет выводиться
+пустой тег <code>&lt;p&gt;</code> в блоке уведомления.</p>
+</li>
+</ol>
+</details> 
+<details open>
+    <summary>
+        <span style="font-weight: bold; font-size: 20px;">
+            v2.0.0
+        </span>
+    </summary>
+<p>В файл стилей, который подключается первым на страницу, вписать подключение
+шрифта для уведомлений</p>
+<pre class="prettyprint source lang-css"><code>@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+</code></pre>
+<p>Путь до иконок по умолчанию совпадает с путём подключения js-файла библиотеки</p>
+<h3>Создание уведомления</h3>
+<p>Обязательными при создании остались только поля <strong>title</strong> или <strong>text</strong>. Если
+указано одно из них, то второе может быть опущено. Создание уведомления в
+полной конфигурации:</p>
+<pre class="prettyprint source lang-javascript"><code>const notifiy = new Notify(&quot;&quot;, {
+    type: &quot;error&quot;,
+    title: &quot;Произошла ошибка&quot;,
+    text: &quot;Ошибка при отправке формы, попробуйте позже&quot;,
+    position: &quot;top left&quot;,
+    filledBackground: true,
+    displayType: &quot;fixed&quot;,
+    closeTime: 5000,
+    buttonConfig: {
+        text: &quot;Попробовать ещё раз&quot;,
+        callback: sendForm,
+    },
+    pathToIcons: &quot;/upload/icons/notifies_icons&quot;,
+})
+</code></pre>
+<p>В настройке <code>pathToIcons</code> слеш в конце не нужен</p>
+</details></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Notify.html">Notify</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 04 2024 22:24:22 GMT+0300 (Москва, стандартное время)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

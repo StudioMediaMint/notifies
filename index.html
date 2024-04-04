@@ -27,6 +27,11 @@
             <a class="header__logo" target="_blank" href="https://mediamint.ru/">
                 mediamint
             </a>
+
+            <div class="header__docs">
+                <a href="./docs/notifies/2.0.0/Notify.html">Описание свойств и методов</a>
+                <a href="./docs/notifies/2.0.0/">Документация</a>
+            </div>
         </div>
     </header>
 
@@ -41,7 +46,7 @@
                         <option value="" selected disabled>Выберите тип...</option>
                         <option value="error">Ошибка</option>
                         <option value="success">Успех</option>
-                        <option value="info">Информация</option>
+                        <option value="info" selected>Информация</option>
                         <option value="warning">Предупреждение</option>
                     </select>
                 </label>
@@ -67,7 +72,7 @@
 
                             <label class="radio-button">
                                 <span>Справа сверху</span>
-                                <input type="radio" name="notify-position" value="top right">
+                                <input checked type="radio" name="notify-position" value="top right">
                             </label>
 
                             <label class="radio-button">

@@ -1,0 +1,15 @@
+{
+  "name": "notifies",
+  "version": "2.0.0",
+  "description": "Класс для показа уведомлений с возможностью добавить кнопку",
+  "main": "main.js",
+  "scripts": {
+    "docs": "jsdoc -c ./jsdoc.config.json"
+  },
+  "keywords": ["jsdoc", "notifies", "mediamint", "уведомления"],
+  "author": "Bychkov Leonid <bychkov.l47@mail.ru>",
+  "license": "ISC",
+  "devDependencies": {
+    "jsdoc": "^4.0.2"
+  }
+}

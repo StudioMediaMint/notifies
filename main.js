@@ -1,35 +1,47 @@
 function onSubmit(event) {
     event.preventDefault();
 
+    const validateNotify = new Notify("", {
+        type: "error",
+    })
+
     const formData = new FormData(event.currentTarget);
 
-    const notifyType = formData.get("notify-type");
-    const notifyTitle = formData.get("notify-title");
-    const notifyText = formData.get("notify-text");
-    const notifyPosition = formData.get("notify-position");
-    const notifyFilled = formData.get("notify-filled");
-    const notifyCloseTime = formData.get("notify-closeTimeout");
-    const notifyShowButton = formData.get("notify-showButton");
-    const notifyButtonText = formData.get("notify-buttonText");
-    const notifyButtonCallbackText = formData.get("notify-buttonAlertText");
+    const notifyType = String(formData.get("notify-type"));
+    const notifyTitle = String(formData.get("notify-title"));
+    const notifyText = String(formData.get("notify-text"));
+    const notifyPosition = String(formData.get("notify-position"));
+    const notifyFilled = String(formData.get("notify-filled"));
+    const notifyCloseTime = Number(formData.get("notify-closeTimeout"));
+    const notifyShowButton = String(formData.get("notify-showButton"));
+    const notifyButtonText = String(formData.get("notify-buttonText"));
+    const notifyButtonCallbackText = String(formData.get("notify-buttonAlertText"));
 
-    const options = {
+    if (!(notifyTitle.length || notifyText.length)) {
+        validateNotify.title = "Это не ваше уведомление, а системное"
+        validateNotify.text = "Не указан заголовок или текст";
+        validateNotify.show();
+
+        return;
+    }
+
+    const optionsObject = {
         type: notifyType,
         title: notifyTitle,
         text: notifyText,
         position: notifyPosition,
-        closeTimeout: notifyCloseTime,
-        filled: notifyFilled === "on",
+        closeTime: notifyCloseTime,
+        filledBackground: notifyFilled === "on",
     }
 
     if (notifyShowButton === "on") {
-        options.button = {
+        optionsObject.buttonConfig = {
             text: notifyButtonText,
             callback: () => {alert(`${notifyButtonCallbackText}`)},
         }
     }
 
-    const notify = new Notify("", options);
+    const notify = new Notify("", optionsObject);
     notify.show();
 }
 
