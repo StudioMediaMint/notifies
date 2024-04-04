@@ -13,7 +13,7 @@ $asset->addJs("/local/templates/.default/vendor/notifies/notifies.js");
 Файлы брать из папки ``/src``. В папку со скриптом и стилями положить папку `icons` с иконками. Иконки взять из папки ``/icons``
 
 ## Использование
-Перед закрывающим тего ``</body>`` вставить элемент
+Перед закрывающим тегом ``</body>`` вставить элемент
 ```html
 <div class="mm-notifies-wrapper fixed"></div>
 ```
