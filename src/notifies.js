@@ -1,7 +1,7 @@
 class Notify {
     #whereToRender          // определяет, куда выводить HTML, если
     #type                   // тип сообщения: Ошибка, Инфо, Успех, Предупреждение
-    #notyTitle              // заголовок сообщения. Зависит от type
+    #notyTitle              // Заголовок сообщения. Зависит от type
     #position               // Выводить ошибку как всплывающую в fixed-блок или выводить ошибку в заранее подготовленное место
     #cssPosition            // если выводить как всплывающую, то где? слева/справа внизу/наверху
     #selector               // куда выводить ошибку. Если #position==="block", то берется #whereToRender, иначе ".mm-notifies-wrapper.fixed";
@@ -38,7 +38,7 @@ class Notify {
         this.#cssPosition = options.cssPosition ? options.cssPosition : "fixed";
 
         this.#selector = options.cssPosition === "block" ? whereToRender : ".mm-notifies-wrapper.fixed";
-        this.#notifyText = options.text ? options.text : "Сообщение";
+        this.#notifyText = options.text ? options.text : "";
         this.closeTime = options.closeTimeout ? options.closeTimeout : 3000;
         this.#closeTimeoutFunction = null;
 
@@ -48,6 +48,34 @@ class Notify {
         this.#pathToIcons = options.iconsPath ? options.iconsPath : "/local/templates/.default/vendor/notifies/icons";
 
         this.close.bind(this);
+    }
+
+    set type(value) {
+        const needed = ["info", "success", "error", "warning"]
+        if (!needed.includes(value)) {
+            console.error("Недопустимое значение свойства \"type\"")
+            return;
+        }
+
+        this.#type = value;
+    }
+
+    set notyTitle(value) {
+        if (typeof value !== "string") {
+            console.error("Заголовок должен быть строкой");
+            return;
+        }
+
+        this.#notyTitle = value;
+    }
+
+    set notifyText(value) {
+        if (typeof value !== "string") {
+            console.error("Текст описания должен быть строкой");
+            return;
+        }
+
+        this.#notifyText = value;
     }
 
     getTemplate() {
@@ -86,9 +114,11 @@ class Notify {
                        ${this.#notyTitle}
                    </p>
                    
-                   <p class="mm-notify__description">
-                       ${this.#notifyText}
-                   </p>
+                    ${this.#notifyText.length ? 
+                        `<p class="mm-notify__description">
+                           ${this.#notifyText}
+                        </p>` 
+                    : ""}
                 </div>
                 
                 ${this.#hasButton && this.#buttonConfig ? 

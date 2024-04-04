@@ -10,16 +10,23 @@ $asset->addCss("/local/templates/.default/vendor/notifies/notifies.css");
 $asset->addJs("/local/templates/.default/vendor/notifies/notifies.js");
 ?>
 ```
-Файлы брать из папки ``/src``. В папку с со скриптом и стилями положить папку `icons` с иконками. Иконки взять из папки ``/icons``
+Файлы брать из папки ``/src``. В папку со скриптом и стилями положить папку `icons` с иконками. Иконки взять из папки ``/icons``
 
 ## Использование
-1. В ``footer.php`` перед ``</body>`` вставить элемент
+Перед закрывающим тего ``</body>`` вставить элемент
 ```html
 <div class="mm-notifies-wrapper fixed"></div>
 ```
 В него будут рисовать уведомления с параметром ``cssPositon: "fixed"``.
 
-2. В месте, где нужно вызвать отрисовку уведомления, создать уведомление: 
+<details>
+    <summary>
+        <span style="font-weight: bold; font-size: 20px;">
+            v1.0.0
+        </span>
+    </summary>
+
+Создание уведомления:
 ```js
 const notify = new Notify([whereToRender = "" | CSS_Selector | DOM_Element], {
     type: "info" | "error" | "success" | "warning",
@@ -41,14 +48,13 @@ notify.show();
 
 Цвета фонов переопределять в своих стилях, например, в ``template_styles.css``
 
-## Параметры
 ``whereToRender`` - блок, куда отрисовывать сообщения. Используется только тогда, когда ``cssPosition: "block"``
 **Значения:**
 * ``CSS Selector`` вида ``".input-errors-block"``
 * ``DOM Element`` - результат вызова ``Element.querySelector()``
 
-``type`` - тип сообщения. 
-<br>**Значения:**
+``type`` - тип сообщения.<br>
+**Значения:**
 * ``info`` - информационное сообщение, синий фон
 * ``success`` - успешное действие, зеленый фон
 * ``error`` - ошибка, красный фон
@@ -60,7 +66,8 @@ notify.show();
 ``text`` - текст сообщения. <br>
 **Значение:** любая строка. Значение по умолчанию: "**Сообщение**".
 
-``position`` - позиция для отрисовки в углы. При значении ``cssPosition: "block"`` игнорирутся.
+``position`` - позиция для отрисовки в углы. При значении ``cssPosition:
+"block"`` игнорируется.
 <br>**Значения:**
 * ``top right`` - правый верхний угол. Значение по умолчанию.
 * ``top left`` - левый верхний угол
@@ -80,7 +87,7 @@ notify.show();
 
 ``filled`` - фон залитый цветом или светлый. **Необязательный**
 
-``button`` - конфигурация кнопки в уведомлении. Если указан ключ объекта, но не указан текст кнопки, кнопка показана не 
+``button`` - конфигурация кнопки в уведомлении. Если указан ключ объекта, но не указан текст кнопки, кнопка показана не
 будет. **Значение - объект** с двумя ключами - **text** и **callback**
 ```js
 options = {
@@ -91,3 +98,30 @@ options = {
     }    
 }
 ```
+</details>
+
+<details>
+    <summary>
+        <span style="font-weight: bold; font-size: 20px;">
+            v1.1.0
+        </span>
+    </summary>
+
+1. Появились setter-ы для полей:
+   * type
+   * notyTitle
+   * notifyText
+
+2. Теперь поле ```notifyText``` может быть пустым и не будет выводиться 
+   пустой тег ```<p>``` в блоке уведомления. 
+</details> 
+
+<details>
+    <summary>
+        <span style="font-weight: bold; font-size: 20px;">
+            v2.0.0
+        </span>
+    </summary>
+
+
+</details> 
