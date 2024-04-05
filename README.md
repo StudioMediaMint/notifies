@@ -12,8 +12,7 @@ $asset->addJs("/local/templates/.default/vendor/notifies/notifies.js");
 ?>
 ```
 
-Файлы брать из папки ``/src``. В папку со скриптом и стилями положить
-папку `icons` с иконками. Иконки взять из папки ``/icons``
+**Файлы брать из релиза.**
 
 ## Использование
 
@@ -173,6 +172,7 @@ const notifiy = new Notify("", {
         text: "Попробовать ещё раз",
         callback: sendForm,
     },
+    searchiconsnearJS: false,
     pathToIcons: "/upload/icons/notifies_icons",
 })
 ```
