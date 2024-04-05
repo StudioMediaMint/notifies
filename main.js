@@ -3,6 +3,7 @@ function onSubmit(event) {
 
     const validateNotify = new Notify("", {
         type: "error",
+        searchIconsNearJS: true,
     })
 
     const formData = new FormData(event.currentTarget);
@@ -32,6 +33,7 @@ function onSubmit(event) {
         position: notifyPosition,
         closeTime: notifyCloseTime,
         filledBackground: notifyFilled === "on",
+        searchIconsNearJS: true,
     }
 
     if (notifyShowButton === "on") {

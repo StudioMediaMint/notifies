@@ -13,6 +13,13 @@
  */
 class Notify {
     /**
+     * Номер текущей версии
+     * @private
+     * @type {string}
+     */
+    #version = "2.0.0";
+
+    /**
      * Определяет, куда выводить уведомление, если {@link Notify#displayType} передано со значением **block**
      * @private
      * @type {(HTMLElement | HTMLDivElement | string)}
@@ -105,9 +112,11 @@ class Notify {
     #hasButton= false
 
     /**
-     * Настройка кнопки в уведомлении. Содержит поля **text** и **callback**
+     * Настройка кнопки в уведомлении
      * @public
      * @type {?object}
+     * @property {string} text - Текст на кнопке
+     * @property {function} callback - функция, которая будет вызвана при клике на кнопку
      * @default {}
      * @example
      * // Настройка кнопки
@@ -133,13 +142,23 @@ class Notify {
     filledBackground = false
 
     /**
-     * Путь до папки с svg-иконками. Символ "/" в конце не нужен
+     * Путь до папки с svg-иконками. Символ "/" в конце не нужен.
+     * * Если ```options.searchIconsNearJS: true```, то <path_to_js>/icons
+     * * Если ```options.searchIconsNearJS: false```, то "/local/templates/.default/vendor/notifies-<версия>/icons"
+     *
      * @public
      * @type {string}
-     * @default "<путь_до_js_файла_notifies.js>/icons"
+     * @default "/local/templates/.default/vendor/notifies-<версия>/icons"
      */
-    // pathToIcons = this.#generatePathToIcons();
-    pathToIcons = this._generatePathToIcons();
+    pathToIcons = `/local/templates/.default/vendor/notifies-${this.#version}>/icons`
+
+    /**
+     * Искать папку с иконками рядом с JS-файлом. В 1C-Битрикс при использовании опции "Объединять JS файлы" нужно оставить в значении ```false```
+     * @type {boolean}
+     * @private
+     * @default false
+     */
+    #searchIconsNearJS = false;
 
     /**
      * Создание объекта уведомления
@@ -155,6 +174,7 @@ class Notify {
      * @param {?number} options.closeTime - Время в мс, через которое будет закрыто всплывающее уведомление
      * @param {?object} options.buttonConfig - Конфигурация кнопки [подробнее]{@link Notify#buttonConfig}
      * @param {?string} options.pathToIcons - Путь к папке с SVG иконками [подробнее]{@link Notify#pathToIcons}
+     * @param {?boolean} options.searchIconsNearJS - Искать папку с икноками рядом с JS-файлом. Для 1С-Битрикс оставить false. [Подробнее]{@link Notify#searchIconsNearJS}
      */
     constructor(whereToRender, options = {}) {
         this.#type = options.type ?? this.getType();
@@ -174,7 +194,18 @@ class Notify {
         this.#hasButton = options.hasOwnProperty("buttonConfig") && options.buttonConfig.text;
         this.buttonConfig = options.buttonConfig ?? {};
 
-        this.pathToIcons = options.pathToIcons ?? this.pathToIcons;
+        this.#searchIconsNearJS = options.searchIconsNearJS ?? this.#searchIconsNearJS;
+
+        // если путь к иконкам генерировать от папке подключения js файла
+        if (this.#searchIconsNearJS) {
+            // путь к иконкам берется относительно этого js файла
+            this.pathToIcons = this._generatePathToIcons();
+        }
+        // если не генерировать путь и передан путь к иконкам
+        else if (this.#searchIconsNearJS !== true && options.pathToIcons && options.pathToIcons.length) {
+            // путь к иконкам берётся из настроек
+            this.pathToIcons = options.pathToIcons;
+        }
 
         // TODO разобраться с этим
         this.#whereToRender = whereToRender ? whereToRender : null;
@@ -214,8 +245,6 @@ class Notify {
      * @return {void}
      */
     _getTemplate() {
-        // console.log(this.counterId);
-
         let templateElem = null;
 
         // рисуем просто текст ошибки
@@ -282,8 +311,6 @@ class Notify {
             if (callbackBtn) {
                 callbackBtn.addEventListener("click", this.buttonConfig.callback);
             }
-
-            // templateElem.dataset.notifyCounter = `${this.counterId}`;
         }
 
         this.elem = templateElem;
@@ -298,15 +325,12 @@ class Notify {
         let neededFolderPath = "";
 
         const scriptTags = document.querySelectorAll("script");
-        console.log(scriptTags);
 
         for (const scriptTagsKey in scriptTags) {
             const scriptTag = scriptTags[scriptTagsKey];
 
             const scriptPath = scriptTag.src;
             const scriptFolder = scriptPath.substr(0, scriptPath.lastIndexOf( '/' )+1 );
-
-            console.log([scriptPath, scriptFolder]);
 
             if(scriptFolder.includes("notifies")) {
                 let array = scriptFolder.split("://")

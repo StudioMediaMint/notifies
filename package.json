@@ -4,7 +4,7 @@
   "description": "Класс для показа уведомлений с возможностью добавить кнопку",
   "main": "main.js",
   "scripts": {
-    "docs": "jsdoc -c ./jsdoc.config.json"
+    "docs": "jsdoc src -c jsdoc.config.json"
   },
   "keywords": ["jsdoc", "notifies", "mediamint", "уведомления"],
   "author": "Bychkov Leonid <bychkov.l47@mail.ru>",
