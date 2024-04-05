@@ -150,7 +150,7 @@ class Notify {
      * @type {string}
      * @default "/local/templates/.default/vendor/notifies-<версия>/icons"
      */
-    pathToIcons = `/local/templates/.default/vendor/notifies-${this.#version}>/icons`
+    pathToIcons = `/local/templates/.default/vendor/notifies-${this.#version}/icons`
 
     /**
      * Искать папку с иконками рядом с JS-файлом. В 1C-Битрикс при использовании опции "Объединять JS файлы" нужно оставить в значении ```false```
